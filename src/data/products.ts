@@ -1,0 +1,357 @@
+import pChain from "@/assets/p-chain.jpg";
+import pEarrings from "@/assets/p-earrings.jpg";
+import pRing from "@/assets/p-ring.jpg";
+import pBracelet from "@/assets/p-bracelet.jpg";
+import pHairStraight from "@/assets/p-hair-straight.jpg";
+import pHairWave from "@/assets/p-hair-wave.jpg";
+import pHairCurl from "@/assets/p-hair-curl.jpg";
+import pHairFrontal from "@/assets/p-hair-frontal.jpg";
+import pPerfume from "@/assets/p-perfume.jpg";
+import pLipstick from "@/assets/p-lipstick.jpg";
+import pSerum from "@/assets/p-serum.jpg";
+import pCream from "@/assets/p-cream.jpg";
+import pDress from "@/assets/p-dress.jpg";
+import pShoes from "@/assets/p-shoes.jpg";
+import pScarf from "@/assets/p-scarf.jpg";
+import pSuit from "@/assets/p-suit.jpg";
+import type { CategorySlug } from "./categories";
+
+export type Label = "New" | "Hot" | "Sale" | "Best Seller";
+
+export interface Product {
+  id: string;
+  slug: string;
+  name: string;
+  category: CategorySlug;
+  subcategory: string;
+  price: number;
+  originalPrice?: number;
+  sku: string;
+  images: string[];
+  description: string;
+  specs: Record<string, string>;
+  inStock: boolean;
+  rating: number;
+  reviews: number;
+  label?: Label;
+  variants?: { name: string; values: string[] }[];
+}
+
+const make = (p: Product): Product => p;
+
+export const products: Product[] = [
+  // ============ JEWELLERY ============
+  make({
+    id: "j-001",
+    slug: "regal-cuban-link-24k",
+    name: "Regal Cuban Link Chain — 24K Gold",
+    category: "jewellery",
+    subcategory: "24K Gold",
+    price: 1850000,
+    originalPrice: 2100000,
+    sku: "ZC-J-24K-001",
+    images: [pChain],
+    description:
+      "A statement Cuban link forged in pure 24K gold. Polished by hand, weighted to drape with intention. The kind of chain you pass down.",
+    specs: { Gold: "24K", Weight: "62g", Length: "22 in", Clasp: "Box clasp" },
+    inStock: true,
+    rating: 4.9,
+    reviews: 124,
+    label: "Best Seller",
+    variants: [{ name: "Length", values: ["18 in", "20 in", "22 in", "24 in"] }],
+  }),
+  make({
+    id: "j-002",
+    slug: "celestine-diamond-drops-22k",
+    name: "Celestine Diamond Drop Earrings — 22K",
+    category: "jewellery",
+    subcategory: "Earrings",
+    price: 720000,
+    sku: "ZC-J-22K-002",
+    images: [pEarrings],
+    description: "Pear-cut stones suspended from 22K gold hooks. Light catches them like applause.",
+    specs: { Gold: "22K", Stone: "VS Diamond", Drop: "32mm" },
+    inStock: true,
+    rating: 4.8,
+    reviews: 86,
+    label: "New",
+  }),
+  make({
+    id: "j-003",
+    slug: "soleil-signet-ring-21k",
+    name: "Soleil Signet Ring — 21K Gold",
+    category: "jewellery",
+    subcategory: "Rings",
+    price: 540000,
+    originalPrice: 620000,
+    sku: "ZC-J-21K-003",
+    images: [pRing],
+    description: "A modern signet with a brilliant centre stone. Quiet, certain, unforgettable.",
+    specs: { Gold: "21K", Stone: "Diamond 0.25ct", Sizes: "5–10" },
+    inStock: true,
+    rating: 4.9,
+    reviews: 53,
+    label: "Sale",
+    variants: [{ name: "Size", values: ["5", "6", "7", "8", "9", "10"] }],
+  }),
+  make({
+    id: "j-004",
+    slug: "lumiere-tennis-bracelet-18k",
+    name: "Lumière Tennis Bracelet — 18K",
+    category: "jewellery",
+    subcategory: "Bracelets",
+    price: 1280000,
+    sku: "ZC-J-18K-004",
+    images: [pBracelet],
+    description: "Two rows of brilliant stones set in 18K gold. Engineered to move with you.",
+    specs: { Gold: "18K", Stones: "108 VS", Length: "7 in" },
+    inStock: true,
+    rating: 4.7,
+    reviews: 41,
+    label: "Hot",
+  }),
+  make({
+    id: "j-005",
+    slug: "atelier-rope-chain-22k",
+    name: "Atelier Rope Chain — 22K Gold",
+    category: "jewellery",
+    subcategory: "Chains",
+    price: 980000,
+    sku: "ZC-J-22K-005",
+    images: [pChain],
+    description: "A slimmer, layerable 22K rope chain for everyday refinement.",
+    specs: { Gold: "22K", Weight: "28g", Length: "20 in" },
+    inStock: true,
+    rating: 4.6,
+    reviews: 32,
+  }),
+  make({
+    id: "j-006",
+    slug: "noir-eternity-band-18k",
+    name: "Noir Eternity Band — 18K",
+    category: "jewellery",
+    subcategory: "Rings",
+    price: 460000,
+    sku: "ZC-J-18K-006",
+    images: [pRing],
+    description: "Black-enamel detail set against bright 18K gold. A modern eternity ring.",
+    specs: { Gold: "18K", Width: "3mm", Sizes: "5–9" },
+    inStock: false,
+    rating: 4.5,
+    reviews: 18,
+  }),
+
+  // ============ HAIR ============
+  make({
+    id: "h-001",
+    slug: "raw-bone-straight-24in",
+    name: "Raw Bone Straight Bundle — 24\"",
+    category: "hair",
+    subcategory: "Bone Straight",
+    price: 185000,
+    originalPrice: 210000,
+    sku: "ZC-H-BS-24",
+    images: [pHairStraight],
+    description: "Single-donor raw hair, cuticles aligned, dyed to a deep natural black. Lays bone straight from root to tip.",
+    specs: { Type: "Raw", Length: "24 in", Weight: "100g", Origin: "Single donor" },
+    inStock: true,
+    rating: 5.0,
+    reviews: 212,
+    label: "Best Seller",
+    variants: [{ name: "Length", values: ["18\"", "20\"", "22\"", "24\"", "26\"", "30\""] }],
+  }),
+  make({
+    id: "h-002",
+    slug: "luxe-body-wave-22in",
+    name: "Luxe Body Wave Bundle — 22\"",
+    category: "hair",
+    subcategory: "Body Wave",
+    price: 165000,
+    sku: "ZC-H-BW-22",
+    images: [pHairWave],
+    description: "Loose romantic waves that hold shape wash after wash.",
+    specs: { Type: "Raw", Length: "22 in", Weight: "100g" },
+    inStock: true,
+    rating: 4.9,
+    reviews: 168,
+    label: "Hot",
+  }),
+  make({
+    id: "h-003",
+    slug: "jerry-curl-bundle-20in",
+    name: "Jerry Curl Bundle — 20\"",
+    category: "hair",
+    subcategory: "Jerry Curl",
+    price: 175000,
+    sku: "ZC-H-JC-20",
+    images: [pHairCurl],
+    description: "Defined, springy curls with body and bounce.",
+    specs: { Type: "Raw", Length: "20 in", Weight: "100g" },
+    inStock: true,
+    rating: 4.8,
+    reviews: 94,
+  }),
+  make({
+    id: "h-004",
+    slug: "hd-lace-frontal-13x4",
+    name: "HD Lace Frontal — 13×4",
+    category: "hair",
+    subcategory: "Frontal",
+    price: 240000,
+    sku: "ZC-H-FR-134",
+    images: [pHairFrontal],
+    description: "Invisible HD lace, pre-plucked hairline, bleached knots ready to install.",
+    specs: { Lace: "HD", Size: "13×4", Density: "180%" },
+    inStock: true,
+    rating: 4.9,
+    reviews: 73,
+    label: "New",
+  }),
+
+  // ============ BEAUTY ============
+  make({
+    id: "b-001",
+    slug: "amber-noir-eau-de-parfum",
+    name: "Amber Noir Eau de Parfum",
+    category: "beauty",
+    subcategory: "Perfume",
+    price: 95000,
+    originalPrice: 120000,
+    sku: "ZC-B-PF-001",
+    images: [pPerfume],
+    description: "A warm oriental — amber, saffron and oud, with a base of vanilla and Egyptian musk.",
+    specs: { Size: "100ml", Family: "Oriental", Longevity: "10–12 hrs" },
+    inStock: true,
+    rating: 4.8,
+    reviews: 142,
+    label: "Sale",
+  }),
+  make({
+    id: "b-002",
+    slug: "velvet-matte-lipstick-rouge",
+    name: "Velvet Matte Lipstick — Rouge Royale",
+    category: "beauty",
+    subcategory: "Cosmetics",
+    price: 18500,
+    sku: "ZC-B-LP-002",
+    images: [pLipstick],
+    description: "A cushioned matte that wears for hours without drying. The perfect red.",
+    specs: { Finish: "Matte", Net: "3.5g" },
+    inStock: true,
+    rating: 4.7,
+    reviews: 211,
+    label: "Best Seller",
+  }),
+  make({
+    id: "b-003",
+    slug: "24k-radiance-serum",
+    name: "24K Radiance Glow Serum",
+    category: "beauty",
+    subcategory: "Skincare",
+    price: 62000,
+    sku: "ZC-B-SR-003",
+    images: [pSerum],
+    description: "Niacinamide, hyaluronic acid and real gold flakes for a lit-from-within finish.",
+    specs: { Size: "30ml", Key: "Niacinamide, HA, Gold" },
+    inStock: true,
+    rating: 4.9,
+    reviews: 96,
+    label: "New",
+  }),
+  make({
+    id: "b-004",
+    slug: "rituel-body-cream",
+    name: "Rituel Body Cream",
+    category: "beauty",
+    subcategory: "Body Care",
+    price: 34500,
+    sku: "ZC-B-BC-004",
+    images: [pCream],
+    description: "Shea, marula and a whisper of jasmine. The most luxurious thing in your bathroom.",
+    specs: { Size: "200ml", Scent: "Jasmine, Vanilla" },
+    inStock: true,
+    rating: 4.8,
+    reviews: 78,
+  }),
+
+  // ============ CLOTHING ============
+  make({
+    id: "c-001",
+    slug: "obsidian-silk-slip-dress",
+    name: "Obsidian Silk Slip Dress",
+    category: "clothing",
+    subcategory: "Women",
+    price: 145000,
+    originalPrice: 180000,
+    sku: "ZC-C-W-001",
+    images: [pDress],
+    description: "Bias-cut 100% mulberry silk that moves like water. Black-tie ready in a single step.",
+    specs: { Fabric: "100% Mulberry Silk", Care: "Dry clean" },
+    inStock: true,
+    rating: 4.9,
+    reviews: 64,
+    label: "Best Seller",
+    variants: [{ name: "Size", values: ["XS", "S", "M", "L", "XL"] }],
+  }),
+  make({
+    id: "c-002",
+    slug: "milano-leather-loafer",
+    name: "Milano Hand-Stitched Leather Loafer",
+    category: "clothing",
+    subcategory: "Shoes",
+    price: 215000,
+    sku: "ZC-C-SH-002",
+    images: [pShoes],
+    description: "Italian calf leather, hand-stitched penny strap, leather sole. A wardrobe foundation.",
+    specs: { Material: "Italian Calf", Sole: "Leather" },
+    inStock: true,
+    rating: 4.8,
+    reviews: 41,
+    variants: [{ name: "Size", values: ["40", "41", "42", "43", "44", "45"] }],
+  }),
+  make({
+    id: "c-003",
+    slug: "midas-silk-scarf",
+    name: "Midas Silk Scarf",
+    category: "clothing",
+    subcategory: "Accessories",
+    price: 52000,
+    sku: "ZC-C-AC-003",
+    images: [pScarf],
+    description: "A pure gold tone in mulberry silk with hand-rolled edges.",
+    specs: { Size: "90×90cm", Fabric: "Silk twill" },
+    inStock: true,
+    rating: 4.7,
+    reviews: 35,
+    label: "New",
+  }),
+  make({
+    id: "c-004",
+    slug: "noir-tailored-two-piece",
+    name: "Noir Tailored Two-Piece Suit",
+    category: "clothing",
+    subcategory: "Men",
+    price: 320000,
+    sku: "ZC-C-M-004",
+    images: [pSuit],
+    description: "Half-canvas construction, super 120s wool, a notch lapel cut clean.",
+    specs: { Fabric: "Super 120s Wool", Fit: "Tailored" },
+    inStock: true,
+    rating: 4.9,
+    reviews: 22,
+    label: "Hot",
+    variants: [{ name: "Size", values: ["38R", "40R", "42R", "44R", "46R"] }],
+  }),
+];
+
+export const productBySlug = (slug: string) =>
+  products.find((p) => p.slug === slug);
+
+export const productsByCategory = (cat: CategorySlug) =>
+  products.filter((p) => p.category === cat);
+
+export const featuredBy = (label: Label) =>
+  products.filter((p) => p.label === label);
+
+export const relatedProducts = (p: Product, n = 4) =>
+  products.filter((x) => x.category === p.category && x.id !== p.id).slice(0, n);
