@@ -3,7 +3,7 @@ import { Facebook, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react"
 import { Newsletter } from "./Newsletter";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import { WHATSAPP_NUMBER, BUSINESS_ADDRESS, PHONE_DISPLAY } from "@/lib/format";
-import logo from "@/assets/zannies-logo.png.asset.json";
+import logo from "@/assets/logozannies.png";
 
 const EMAILS = [
   { label: "info@zanniescollection.co.uk", type: "General" },
@@ -57,7 +57,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 sm:grid-cols-2 lg:grid-cols-5 lg:px-12">
         <div className="lg:col-span-2">
           <img
-            src={logo.url}
+            src={logo}
             alt="Zannies Collections"
             className="h-14 w-auto object-contain brightness-0 invert"
             width={320}

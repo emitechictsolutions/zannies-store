@@ -4,7 +4,7 @@ import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useCart } from "@/store/cart";
 import { useWishlist } from "@/store/wishlist";
 import { useAuth } from "@/lib/auth";
-import logo from "@/assets/zannies-logo.png.asset.json";
+import logo from "@/assets/logozannies.png";
 
 const nav = [
   { to: "/", label: "Home" },
@@ -58,7 +58,7 @@ export function Header() {
 
         <Link to="/" className="flex items-center" aria-label="Zannies Collections — Home">
           <img
-            src={logo.url}
+            src={logo}
             alt="Zannies Collections"
             className={`h-10 w-auto sm:h-12 object-contain transition-[filter] duration-300 ${
               useLightChrome ? "" : "brightness-0 invert"
