@@ -4,7 +4,7 @@ import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useCart } from "@/store/cart";
 import { useWishlist } from "@/store/wishlist";
 import { useAuth } from "@/lib/auth";
-import logo from "@/assets/logozannies.png";
+import logo from "@/assets/zannies-logo.png";
 
 const nav = [
   { to: "/", label: "Home" },

@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
 import { Sparkles } from "./Sparkles";
-import heroJewellery from "@/assets/hero-jewellery.jpg";
-import heroHair from "@/assets/hero-hair.jpg";
-import heroBeauty from "@/assets/hero-beauty.jpg";
-import heroClothing from "@/assets/hero-clothing.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
-const slides = [heroJewellery, heroHair, heroBeauty, heroClothing];
+const FALLBACK_SLIDES = [
+  "/assets/hero-jewellery.jpg",
+  "/assets/hero-hair.jpg",
+  "/assets/hero-beauty.jpg",
+  "/assets/hero-clothing.jpg",
+];
 const TAGLINE = "Luxury. Beauty. Elegance.";
 
 export function Hero() {
@@ -18,10 +21,28 @@ export function Hero() {
   const y = useTransform(scrollY, [0, 600], [0, 120]);
   const opacity = useTransform(scrollY, [0, 500], [1, 0]);
 
+  const { data: heroImages } = useQuery({
+    queryKey: ["hero-homepage"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("hero_images")
+        .select("image_url, alt_text, headline, subheadline")
+        .eq("category_slug", "homepage")
+        .eq("active", true)
+        .order("sort_order", { ascending: true });
+      return data ?? [];
+    },
+    staleTime: 60_000,
+  });
+
+  const slides = (heroImages && heroImages.length > 0)
+    ? heroImages.map((h) => h.image_url)
+    : FALLBACK_SLIDES;
+
   useEffect(() => {
     const id = setInterval(() => setI((p) => (p + 1) % slides.length), 6000);
     return () => clearInterval(id);
-  }, []);
+  }, [slides.length]);
 
   useEffect(() => {
     let n = 0;
@@ -42,7 +63,7 @@ export function Hero() {
       <motion.div style={{ y, opacity }} className="absolute inset-0">
         {slides.map((src, idx) => (
           <div
-            key={src}
+            key={`${src}-${idx}`}
             className="absolute inset-0 transition-opacity duration-[2000ms] ease-in-out"
             style={{ opacity: i === idx ? 1 : 0 }}
           >

@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/data/products";
 import { categories } from "@/data/categories";
+import { products as staticProducts, type Product } from "@/data/products";
+import { supabase } from "@/integrations/supabase/client";
 import { useCurrency } from "@/lib/currency";
 
 export const Route = createFileRoute("/shop")({
@@ -15,6 +17,27 @@ export const Route = createFileRoute("/shop")({
   component: Shop,
 });
 
+function mapDbProduct(p: any): Product {
+  return {
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    category: (p.categories?.slug ?? p.subcategory ?? "jewellery") as any,
+    subcategory: p.subcategory ?? "",
+    price: p.price_pence,
+    originalPrice: p.original_price_pence ?? undefined,
+    sku: p.sku ?? "",
+    images: Array.isArray(p.images) ? p.images.map(String) : [],
+    description: p.description ?? "",
+    specs: (p.specs as any) ?? {},
+    inStock: true,
+    rating: 5,
+    reviews: 0,
+    label: p.label as any,
+    variants: Array.isArray(p.variants) ? p.variants as any : undefined,
+  };
+}
+
 type Sort = "newest" | "price-asc" | "price-desc" | "rating";
 
 function Shop() {
@@ -24,8 +47,27 @@ function Shop() {
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sort, setSort] = useState<Sort>("newest");
 
+  const { data: dbProducts } = useQuery({
+    queryKey: ["shop-products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*, categories(slug)")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []).map(mapDbProduct);
+    },
+    staleTime: 30_000,
+  });
+
+  const allProducts = useMemo(() => {
+    if (dbProducts && dbProducts.length > 0) return dbProducts;
+    return staticProducts;
+  }, [dbProducts]);
+
   const filtered = useMemo(() => {
-    let list = products.filter(
+    let list = allProducts.filter(
       (p) =>
         (cats.length === 0 || cats.includes(p.category)) &&
         p.price <= maxPrice &&
@@ -36,7 +78,7 @@ function Shop() {
     if (sort === "price-desc") list.sort((a, b) => b.price - a.price);
     if (sort === "rating") list.sort((a, b) => b.rating - a.rating);
     return list;
-  }, [cats, maxPrice, inStockOnly, sort]);
+  }, [allProducts, cats, maxPrice, inStockOnly, sort]);
 
   return (
     <div className="bg-background pt-28">

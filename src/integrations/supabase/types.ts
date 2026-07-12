@@ -214,6 +214,7 @@ export type Database = {
           id: string
           line_total_pence: number
           order_id: string
+          product_description: string | null
           product_id: string | null
           product_image: string | null
           product_name: string
@@ -226,6 +227,7 @@ export type Database = {
           id?: string
           line_total_pence: number
           order_id: string
+          product_description?: string | null
           product_id?: string | null
           product_image?: string | null
           product_name: string
@@ -238,6 +240,7 @@ export type Database = {
           id?: string
           line_total_pence?: number
           order_id?: string
+          product_description?: string | null
           product_id?: string | null
           product_image?: string | null
           product_name?: string
@@ -610,6 +613,27 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          key: string
+          value: Record<string, unknown> | string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          key: string
+          value?: Record<string, unknown> | string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          key?: string
+          value?: Record<string, unknown> | string
+          created_at?: string
+          updated_at?: string
         }
         Relationships: []
       }

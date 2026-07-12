@@ -3,7 +3,7 @@ import { Facebook, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react"
 import { Newsletter } from "./Newsletter";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 import { WHATSAPP_NUMBER, BUSINESS_ADDRESS, PHONE_DISPLAY } from "@/lib/format";
-import logo from "@/assets/logozannies.png";
+import logo from "@/assets/zannies-logo.png";
 
 const EMAILS = [
   { label: "info@zanniescollection.co.uk", type: "General" },

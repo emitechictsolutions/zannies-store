@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import heroJ from "@/assets/hero-jewellery.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -39,7 +38,7 @@ function About() {
           </div>
         </div>
         <div className="relative aspect-[4/5] overflow-hidden bg-ink">
-          <img src={heroJ} alt="" className="h-full w-full object-cover" />
+          <img src="/assets/hero-jewellery.jpg" alt="Gold jewellery collection" className="h-full w-full object-cover" />
         </div>
       </section>
 

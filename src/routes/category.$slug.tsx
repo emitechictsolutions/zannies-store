@@ -1,9 +1,9 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ProductCard } from "@/components/ProductCard";
-import { categoryBySlug } from "@/data/categories";
-import { productsByCategory } from "@/data/products";
+import { categoryBySlug, categories as staticCategories } from "@/data/categories";
+import { productsByCategory as staticProductsByCategory, type Product } from "@/data/products";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/category/$slug")({
@@ -35,9 +35,68 @@ export const Route = createFileRoute("/category/$slug")({
   ),
 });
 
+function mapDbProduct(p: any): Product {
+  return {
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    category: (p.categories?.slug ?? "jewellery") as any,
+    subcategory: p.subcategory ?? "",
+    price: p.price_pence,
+    originalPrice: p.original_price_pence ?? undefined,
+    sku: p.sku ?? "",
+    images: Array.isArray(p.images) ? p.images.map(String) : [],
+    description: p.description ?? "",
+    specs: (p.specs as any) ?? {},
+    inStock: true,
+    rating: 5,
+    reviews: 0,
+    label: p.label as any,
+    variants: Array.isArray(p.variants) ? p.variants as any : undefined,
+  };
+}
+
 function CategoryPage() {
   const { category } = Route.useLoaderData();
-  const list = productsByCategory(category.slug);
+
+  const { data: dbCategory } = useQuery({
+    queryKey: ["category-db", category.slug],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("categories")
+        .select("*")
+        .eq("slug", category.slug)
+        .maybeSingle();
+      return data;
+    },
+    staleTime: 60_000,
+  });
+
+  const { data: dbProducts } = useQuery({
+    queryKey: ["category-products", category.slug],
+    queryFn: async () => {
+      const { data: catData } = await supabase
+        .from("categories")
+        .select("id")
+        .eq("slug", category.slug)
+        .maybeSingle();
+      if (!catData) return [];
+      const { data } = await supabase
+        .from("products")
+        .select("*, categories(slug)")
+        .eq("category_id", catData.id)
+        .eq("is_active", true);
+      return (data ?? []).map(mapDbProduct);
+    },
+    staleTime: 30_000,
+  });
+
+  const list = useMemo(() => {
+    if (dbProducts && dbProducts.length > 0) return dbProducts;
+    return staticProductsByCategory(category.slug);
+  }, [dbProducts, category.slug]);
+
+  const categoryImage = dbCategory?.image_url ?? category.image;
 
   const { data: heroes } = useQuery({
     queryKey: ["hero-images", category.slug],
@@ -54,7 +113,7 @@ function CategoryPage() {
 
   const gallery = (heroes && heroes.length > 0)
     ? heroes
-    : [{ image_url: category.image, alt_text: category.name, headline: null, subheadline: null }];
+    : [{ image_url: categoryImage, alt_text: category.name, headline: null, subheadline: null }];
 
   const [idx, setIdx] = useState(0);
   useEffect(() => {

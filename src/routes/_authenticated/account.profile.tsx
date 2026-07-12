@@ -48,7 +48,7 @@ function ProfilePage() {
   };
 
   return (
-    <form onSubmit={onSubmit} className="max-w-xl space-y-4">
+    <form key={profile?.id ?? "new-profile"} onSubmit={onSubmit} className="max-w-xl space-y-4">
       <h2 className="font-display text-2xl">Profile</h2>
       <p className="text-xs text-muted-foreground">This information is used to personalise your account and appears on your order receipts.</p>
       <Field name="first_name" label="First name" defaultValue={profile?.first_name} />

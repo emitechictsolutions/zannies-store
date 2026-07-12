@@ -77,6 +77,7 @@ function CheckoutPage() {
             product_id: i.product.id,
             product_name: i.product.name,
             product_image: i.product.images[0] ?? null,
+            product_description: i.product.description ?? null,
             variant: i.variant ?? null,
             qty: i.qty,
             unit_price_pence: toGbpPence(i.product.price),

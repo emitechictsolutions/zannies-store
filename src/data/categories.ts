@@ -1,11 +1,3 @@
-import catJewellery from "@/assets/cat-jewellery.jpg";
-import catHair from "@/assets/cat-hair.jpg";
-import catBeauty from "@/assets/cat-beauty.jpg";
-import catClothing from "@/assets/cat-clothing.jpg";
-import heroMen from "@/assets/hero-men.jpg";
-import heroWomen from "@/assets/hero-women.jpg";
-import heroKids from "@/assets/hero-kids.jpg";
-
 export type CategorySlug =
   | "jewellery"
   | "hair"
@@ -32,7 +24,7 @@ export const categories: Category[] = [
     name: "Jewellery",
     tagline: "Heirloom 18K – 24K Gold",
     description: "Authenticated gold pieces — chains, rings, bangles, and signature collections handcrafted for those who wear their legacy.",
-    image: catJewellery,
+    image: "/assets/cat-jewellery.jpg",
     subcategories: ["18K Gold", "21K Gold", "22K Gold", "24K Gold", "Rings", "Chains", "Bracelets", "Earrings", "Necklaces"],
   },
   {
@@ -40,7 +32,7 @@ export const categories: Category[] = [
     name: "Hair",
     tagline: "Premium Bundles & Closures",
     description: "Ethically sourced raw hair — bone straight, body wave, deep wave, pixie and frontals with the kind of luster that lasts.",
-    image: catHair,
+    image: "/assets/cat-hair.jpg",
     subcategories: ["Bone Straight", "Body Wave", "Deep Wave", "Pixie Curl", "Jerry Curl", "Closure", "Frontal", "Bundles"],
   },
   {
@@ -48,7 +40,7 @@ export const categories: Category[] = [
     name: "Beauty",
     tagline: "Skin · Scent · Glow",
     description: "Curated skincare, cosmetics and fragrance from the houses we trust — for the ritual you deserve every morning.",
-    image: catBeauty,
+    image: "/assets/cat-beauty.jpg",
     subcategories: ["Skincare", "Cosmetics", "Makeup", "Perfume", "Body Care"],
   },
   {
@@ -56,7 +48,7 @@ export const categories: Category[] = [
     name: "Clothing",
     tagline: "Tailored Elegance",
     description: "Womenswear, menswear, kids and accessories — pieces designed to be photographed and remembered.",
-    image: catClothing,
+    image: "/assets/cat-clothing.jpg",
     subcategories: ["Women", "Men", "Children", "Shoes", "Accessories"],
   },
   {
@@ -64,7 +56,7 @@ export const categories: Category[] = [
     name: "Men's Clothing",
     tagline: "Sharp · Tailored · Timeless",
     description: "Bespoke suiting, refined casualwear, statement outerwear and heritage accessories for the modern gentleman.",
-    image: heroMen,
+    image: "/assets/hero-men.jpg",
     parent: "clothing",
     subcategories: ["Suits", "Shirts", "Trousers", "Outerwear", "Traditional", "Shoes", "Accessories"],
   },
@@ -73,7 +65,7 @@ export const categories: Category[] = [
     name: "Women's Clothing",
     tagline: "Poised · Feminine · Iconic",
     description: "Evening gowns, silk sets, tailored dresses and heirloom pieces — a wardrobe crafted for the woman who leaves a legacy.",
-    image: heroWomen,
+    image: "/assets/hero-women.jpg",
     parent: "clothing",
     subcategories: ["Dresses", "Gowns", "Two-Piece Sets", "Traditional", "Outerwear", "Shoes", "Bags"],
   },
@@ -82,7 +74,7 @@ export const categories: Category[] = [
     name: "Kids' Clothing",
     tagline: "Little Icons · Big Moments",
     description: "Occasion wear, everyday luxe and adorable accessories for the smallest members of the family — made to be treasured.",
-    image: heroKids,
+    image: "/assets/hero-kids.jpg",
     parent: "clothing",
     subcategories: ["Boys", "Girls", "Occasion Wear", "Everyday", "Shoes", "Accessories"],
   },

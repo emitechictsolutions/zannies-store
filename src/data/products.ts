@@ -1,19 +1,3 @@
-import pChain from "@/assets/p-chain.jpg";
-import pEarrings from "@/assets/p-earrings.jpg";
-import pRing from "@/assets/p-ring.jpg";
-import pBracelet from "@/assets/p-bracelet.jpg";
-import pHairStraight from "@/assets/p-hair-straight.jpg";
-import pHairWave from "@/assets/p-hair-wave.jpg";
-import pHairCurl from "@/assets/p-hair-curl.jpg";
-import pHairFrontal from "@/assets/p-hair-frontal.jpg";
-import pPerfume from "@/assets/p-perfume.jpg";
-import pLipstick from "@/assets/p-lipstick.jpg";
-import pSerum from "@/assets/p-serum.jpg";
-import pCream from "@/assets/p-cream.jpg";
-import pDress from "@/assets/p-dress.jpg";
-import pShoes from "@/assets/p-shoes.jpg";
-import pScarf from "@/assets/p-scarf.jpg";
-import pSuit from "@/assets/p-suit.jpg";
 import type { CategorySlug } from "./categories";
 
 export type Label = "New" | "Hot" | "Sale" | "Best Seller";
@@ -50,7 +34,7 @@ export const products: Product[] = [
     price: 1850000,
     originalPrice: 2100000,
     sku: "ZC-J-24K-001",
-    images: [pChain],
+    images: ["/assets/p-chain.jpg"],
     description:
       "A statement Cuban link forged in pure 24K gold. Polished by hand, weighted to drape with intention. The kind of chain you pass down.",
     specs: { Gold: "24K", Weight: "62g", Length: "22 in", Clasp: "Box clasp" },
@@ -68,7 +52,7 @@ export const products: Product[] = [
     subcategory: "Earrings",
     price: 720000,
     sku: "ZC-J-22K-002",
-    images: [pEarrings],
+    images: ["/assets/p-earrings.jpg"],
     description: "Pear-cut stones suspended from 22K gold hooks. Light catches them like applause.",
     specs: { Gold: "22K", Stone: "VS Diamond", Drop: "32mm" },
     inStock: true,
@@ -85,7 +69,7 @@ export const products: Product[] = [
     price: 540000,
     originalPrice: 620000,
     sku: "ZC-J-21K-003",
-    images: [pRing],
+    images: ["/assets/p-ring.jpg"],
     description: "A modern signet with a brilliant centre stone. Quiet, certain, unforgettable.",
     specs: { Gold: "21K", Stone: "Diamond 0.25ct", Sizes: "5–10" },
     inStock: true,
@@ -102,7 +86,7 @@ export const products: Product[] = [
     subcategory: "Bracelets",
     price: 1280000,
     sku: "ZC-J-18K-004",
-    images: [pBracelet],
+    images: ["/assets/p-bracelet.jpg"],
     description: "Two rows of brilliant stones set in 18K gold. Engineered to move with you.",
     specs: { Gold: "18K", Stones: "108 VS", Length: "7 in" },
     inStock: true,
@@ -118,7 +102,7 @@ export const products: Product[] = [
     subcategory: "Chains",
     price: 980000,
     sku: "ZC-J-22K-005",
-    images: [pChain],
+    images: ["/assets/p-chain.jpg"],
     description: "A slimmer, layerable 22K rope chain for everyday refinement.",
     specs: { Gold: "22K", Weight: "28g", Length: "20 in" },
     inStock: true,
@@ -133,7 +117,7 @@ export const products: Product[] = [
     subcategory: "Rings",
     price: 460000,
     sku: "ZC-J-18K-006",
-    images: [pRing],
+    images: ["/assets/p-ring.jpg"],
     description: "Black-enamel detail set against bright 18K gold. A modern eternity ring.",
     specs: { Gold: "18K", Width: "3mm", Sizes: "5–9" },
     inStock: false,
@@ -151,7 +135,7 @@ export const products: Product[] = [
     price: 185000,
     originalPrice: 210000,
     sku: "ZC-H-BS-24",
-    images: [pHairStraight],
+    images: ["/assets/p-hair-straight.jpg"],
     description: "Single-donor raw hair, cuticles aligned, dyed to a deep natural black. Lays bone straight from root to tip.",
     specs: { Type: "Raw", Length: "24 in", Weight: "100g", Origin: "Single donor" },
     inStock: true,
@@ -168,7 +152,7 @@ export const products: Product[] = [
     subcategory: "Body Wave",
     price: 165000,
     sku: "ZC-H-BW-22",
-    images: [pHairWave],
+    images: ["/assets/p-hair-wave.jpg"],
     description: "Loose romantic waves that hold shape wash after wash.",
     specs: { Type: "Raw", Length: "22 in", Weight: "100g" },
     inStock: true,
@@ -184,7 +168,7 @@ export const products: Product[] = [
     subcategory: "Jerry Curl",
     price: 175000,
     sku: "ZC-H-JC-20",
-    images: [pHairCurl],
+    images: ["/assets/p-hair-curl.jpg"],
     description: "Defined, springy curls with body and bounce.",
     specs: { Type: "Raw", Length: "20 in", Weight: "100g" },
     inStock: true,
@@ -199,7 +183,7 @@ export const products: Product[] = [
     subcategory: "Frontal",
     price: 240000,
     sku: "ZC-H-FR-134",
-    images: [pHairFrontal],
+    images: ["/assets/p-hair-frontal.jpg"],
     description: "Invisible HD lace, pre-plucked hairline, bleached knots ready to install.",
     specs: { Lace: "HD", Size: "13×4", Density: "180%" },
     inStock: true,
@@ -218,7 +202,7 @@ export const products: Product[] = [
     price: 95000,
     originalPrice: 120000,
     sku: "ZC-B-PF-001",
-    images: [pPerfume],
+    images: ["/assets/p-perfume.jpg"],
     description: "A warm oriental — amber, saffron and oud, with a base of vanilla and Egyptian musk.",
     specs: { Size: "100ml", Family: "Oriental", Longevity: "10–12 hrs" },
     inStock: true,
@@ -234,7 +218,7 @@ export const products: Product[] = [
     subcategory: "Cosmetics",
     price: 18500,
     sku: "ZC-B-LP-002",
-    images: [pLipstick],
+    images: ["/assets/p-lipstick.jpg"],
     description: "A cushioned matte that wears for hours without drying. The perfect red.",
     specs: { Finish: "Matte", Net: "3.5g" },
     inStock: true,
@@ -250,7 +234,7 @@ export const products: Product[] = [
     subcategory: "Skincare",
     price: 62000,
     sku: "ZC-B-SR-003",
-    images: [pSerum],
+    images: ["/assets/p-serum.jpg"],
     description: "Niacinamide, hyaluronic acid and real gold flakes for a lit-from-within finish.",
     specs: { Size: "30ml", Key: "Niacinamide, HA, Gold" },
     inStock: true,
@@ -266,7 +250,7 @@ export const products: Product[] = [
     subcategory: "Body Care",
     price: 34500,
     sku: "ZC-B-BC-004",
-    images: [pCream],
+    images: ["/assets/p-cream.jpg"],
     description: "Shea, marula and a whisper of jasmine. The most luxurious thing in your bathroom.",
     specs: { Size: "200ml", Scent: "Jasmine, Vanilla" },
     inStock: true,
@@ -284,7 +268,7 @@ export const products: Product[] = [
     price: 145000,
     originalPrice: 180000,
     sku: "ZC-C-W-001",
-    images: [pDress],
+    images: ["/assets/p-dress.jpg"],
     description: "Bias-cut 100% mulberry silk that moves like water. Black-tie ready in a single step.",
     specs: { Fabric: "100% Mulberry Silk", Care: "Dry clean" },
     inStock: true,
@@ -301,7 +285,7 @@ export const products: Product[] = [
     subcategory: "Shoes",
     price: 215000,
     sku: "ZC-C-SH-002",
-    images: [pShoes],
+    images: ["/assets/p-shoes.jpg"],
     description: "Italian calf leather, hand-stitched penny strap, leather sole. A wardrobe foundation.",
     specs: { Material: "Italian Calf", Sole: "Leather" },
     inStock: true,
@@ -317,7 +301,7 @@ export const products: Product[] = [
     subcategory: "Accessories",
     price: 52000,
     sku: "ZC-C-AC-003",
-    images: [pScarf],
+    images: ["/assets/p-scarf.jpg"],
     description: "A pure gold tone in mulberry silk with hand-rolled edges.",
     specs: { Size: "90×90cm", Fabric: "Silk twill" },
     inStock: true,
@@ -333,7 +317,7 @@ export const products: Product[] = [
     subcategory: "Men",
     price: 320000,
     sku: "ZC-C-M-004",
-    images: [pSuit],
+    images: ["/assets/p-suit.jpg"],
     description: "Half-canvas construction, super 120s wool, a notch lapel cut clean.",
     specs: { Fabric: "Super 120s Wool", Fit: "Tailored" },
     inStock: true,

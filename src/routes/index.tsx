@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Hero } from "@/components/Hero";
@@ -8,7 +9,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Testimonials } from "@/components/Testimonials";
 import { InstaGrid } from "@/components/InstaGrid";
 import { categories } from "@/data/categories";
-import { products, type Product } from "@/data/products";
+import { products as staticProducts, type Product } from "@/data/products";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
@@ -60,11 +61,38 @@ function Home() {
     },
   });
 
-  const bestSellers = (dbFeatured && dbFeatured.length > 0)
-    ? dbFeatured.slice(0, 4)
-    : products.filter((p) => p.label === "Best Seller").slice(0, 4);
-  const newArrivals = products.filter((p) => p.label === "New").slice(0, 4);
-  const trending = products.filter((p) => p.label === "Hot").slice(0, 4);
+  const { data: allDbProducts } = useQuery({
+    queryKey: ["home-all-products"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("products")
+        .select("*, categories(slug)")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+      return (data ?? []).map(mapDbProduct);
+    },
+    staleTime: 30_000,
+  });
+
+  const allProducts = useMemo(() => {
+    if (allDbProducts && allDbProducts.length > 0) return allDbProducts;
+    return staticProducts;
+  }, [allDbProducts]);
+
+  const bestSellers = useMemo(() => {
+    if (dbFeatured && dbFeatured.length > 0) return dbFeatured.slice(0, 4);
+    return allProducts.filter((p) => p.label === "Best Seller").slice(0, 4);
+  }, [dbFeatured, allProducts]);
+
+  const newArrivals = useMemo(() =>
+    allProducts.filter((p) => p.label === "New").slice(0, 4),
+    [allProducts]
+  );
+
+  const trending = useMemo(() =>
+    allProducts.filter((p) => p.label === "Hot").slice(0, 4),
+    [allProducts]
+  );
 
   return (
     <>

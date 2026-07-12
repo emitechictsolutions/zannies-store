@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { createFileRoute, notFound, Link, useNavigate } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Heart, Share2, ShoppingBag, Star, Check } from "lucide-react";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { toast } from "sonner";
 import { ProductCard } from "@/components/ProductCard";
-import { productBySlug, relatedProducts } from "@/data/products";
+import { productBySlug as staticProductBySlug, relatedProducts as staticRelatedProducts, products as staticProducts, type Product } from "@/data/products";
 import { whatsappLink } from "@/lib/format";
 import { useCurrency } from "@/lib/currency";
 import { useCart } from "@/store/cart";
 import { useWishlist } from "@/store/wishlist";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/product/$slug")({
   head: ({ params }) => {
-    const p = productBySlug(params.slug);
+    const p = staticProductBySlug(params.slug);
     const title = p ? `${p.name} — Zannies Collections` : "Product";
     return {
       meta: [
@@ -25,9 +27,9 @@ export const Route = createFileRoute("/product/$slug")({
     };
   },
   loader: ({ params }) => {
-    const p = productBySlug(params.slug);
+    const p = staticProductBySlug(params.slug);
     if (!p) throw notFound();
-    return { product: p };
+    return { product: p, slug: params.slug };
   },
   component: ProductPage,
   notFoundComponent: () => (
@@ -37,14 +39,70 @@ export const Route = createFileRoute("/product/$slug")({
   ),
 });
 
+function mapDbProduct(p: any): Product {
+  return {
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    category: (p.categories?.slug ?? "jewellery") as any,
+    subcategory: p.subcategory ?? "",
+    price: p.price_pence,
+    originalPrice: p.original_price_pence ?? undefined,
+    sku: p.sku ?? "",
+    images: Array.isArray(p.images) ? p.images.map(String) : [],
+    description: p.description ?? "",
+    specs: (p.specs as any) ?? {},
+    inStock: true,
+    rating: 5,
+    reviews: 0,
+    label: p.label as any,
+    variants: Array.isArray(p.variants) ? p.variants as any : undefined,
+  };
+}
+
 function ProductPage() {
-  const { product } = Route.useLoaderData();
-  const related = relatedProducts(product);
+  const { product: staticProduct, slug } = Route.useLoaderData();
   const navigate = useNavigate();
   const add = useCart((s) => s.add);
   const toggle = useWishlist((s) => s.toggle);
-  const wished = useWishlist((s) => s.ids.includes(product.id));
+  const wished = useWishlist((s) => s.ids.includes(staticProduct.id));
   const { format } = useCurrency();
+
+  const { data: dbProduct } = useQuery({
+    queryKey: ["product", slug],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*, categories(slug)")
+        .eq("slug", slug)
+        .eq("is_active", true)
+        .maybeSingle();
+      if (error || !data) return null;
+      return mapDbProduct(data);
+    },
+    staleTime: 30_000,
+  });
+
+  const product = useMemo(() => dbProduct ?? staticProduct, [dbProduct, staticProduct]);
+
+  const { data: relatedDbProducts } = useQuery({
+    queryKey: ["related-products", product.category],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("products")
+        .select("*, categories(slug)")
+        .eq("is_active", true)
+        .neq("slug", slug)
+        .limit(4);
+      return (data ?? []).map(mapDbProduct);
+    },
+    staleTime: 30_000,
+  });
+
+  const related = useMemo(() => {
+    if (relatedDbProducts && relatedDbProducts.length > 0) return relatedDbProducts;
+    return staticRelatedProducts(product);
+  }, [relatedDbProducts, product]);
 
   const [img, setImg] = useState(0);
   const [variant, setVariant] = useState(product.variants?.[0]?.values[0]);

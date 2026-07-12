@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { Package } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Package, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrency } from "@/lib/currency";
 
@@ -28,6 +29,7 @@ function StatusBadge({ status }: { status: string }) {
 
 function OrdersPage() {
   const { format } = useCurrency();
+  const qc = useQueryClient();
   const { data: orders, isLoading } = useQuery({
     queryKey: ["my-orders"],
     queryFn: async () => {
@@ -38,6 +40,14 @@ function OrdersPage() {
       if (error) throw error;
       return data;
     },
+  });
+  const cancel = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("orders").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => { toast.success("Pending order cancelled"); qc.invalidateQueries({ queryKey: ["my-orders"] }); },
+    onError: (e: any) => toast.error(e.message),
   });
 
   if (isLoading) return <p className="text-muted-foreground">Loading orders…</p>;
@@ -61,21 +71,32 @@ function OrdersPage() {
               <p className="text-xs text-muted-foreground">{new Date(o.created_at).toLocaleString()}</p>
             </div>
             <StatusBadge status={o.status} />
-            <div className="text-right">
-              <p className="font-display">{format(o.total_pence)}</p>
-              <p className="text-xs text-muted-foreground">{o.order_items?.length ?? 0} item(s)</p>
+            <div className="flex items-center gap-4">
+              <div className="text-right">
+                <p className="font-display">{format(o.total_pence)}</p>
+                <p className="text-xs text-muted-foreground">{o.order_items?.length ?? 0} item(s)</p>
+              </div>
+              {o.status === "pending" && (
+                <button
+                  onClick={() => { if (confirm("Cancel this pending order?")) cancel.mutate(o.id); }}
+                  className="inline-flex items-center gap-1 border border-destructive/40 px-3 py-1.5 text-xs text-destructive hover:bg-destructive hover:text-white transition-colors"
+                >
+                  <Trash2 className="h-3.5 w-3.5" /> Cancel
+                </button>
+              )}
             </div>
           </div>
           <div className="divide-y divide-border">
             {o.order_items?.map((i: any) => (
               <div key={i.id} className="flex items-center gap-4 px-5 py-3">
-                {i.product_image && <img src={i.product_image} alt="" className="h-14 w-14 object-cover" />}
+                {i.product_image && <img src={i.product_image} alt="" className="h-16 w-16 object-cover border border-border" />}
                 <div className="flex-1">
                   <p className="text-sm font-medium">{i.product_name}</p>
-                  {i.variant && <p className="text-xs text-muted-foreground">{i.variant}</p>}
+                  {i.product_description && <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5">{i.product_description}</p>}
+                  {i.variant && <p className="text-xs text-muted-foreground">Variant: {i.variant}</p>}
                   <p className="text-xs text-muted-foreground">Qty {i.quantity} · {format(i.unit_price_pence)}</p>
                 </div>
-                <p className="text-sm">{format(i.line_total_pence)}</p>
+                <p className="text-sm font-medium">{format(i.line_total_pence)}</p>
               </div>
             ))}
           </div>

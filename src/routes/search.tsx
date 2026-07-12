@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Search as SearchIcon } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { products as staticProducts, type Product } from "@/data/products";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/search")({
   head: () => ({
@@ -14,19 +16,58 @@ export const Route = createFileRoute("/search")({
   component: SearchPage,
 });
 
+function mapDbProduct(p: any): Product {
+  return {
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    category: (p.categories?.slug ?? "jewellery") as any,
+    subcategory: p.subcategory ?? "",
+    price: p.price_pence,
+    originalPrice: p.original_price_pence ?? undefined,
+    sku: p.sku ?? "",
+    images: Array.isArray(p.images) ? p.images.map(String) : [],
+    description: p.description ?? "",
+    specs: (p.specs as any) ?? {},
+    inStock: true,
+    rating: 5,
+    reviews: 0,
+    label: p.label as any,
+  };
+}
+
 function SearchPage() {
   const [q, setQ] = useState("");
+
+  const { data: dbProducts } = useQuery({
+    queryKey: ["search-products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*, categories(slug)")
+        .eq("is_active", true);
+      if (error) throw error;
+      return (data ?? []).map(mapDbProduct);
+    },
+    staleTime: 30_000,
+  });
+
+  const allProducts = useMemo(() => {
+    if (dbProducts && dbProducts.length > 0) return dbProducts;
+    return staticProducts;
+  }, [dbProducts]);
+
   const results = useMemo(() => {
     const term = q.trim().toLowerCase();
     if (!term) return [];
-    return products.filter(
+    return allProducts.filter(
       (p) =>
         p.name.toLowerCase().includes(term) ||
         p.subcategory.toLowerCase().includes(term) ||
         p.category.toLowerCase().includes(term) ||
         p.description.toLowerCase().includes(term)
     );
-  }, [q]);
+  }, [q, allProducts]);
 
   return (
     <div className="bg-background pt-28">

@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, redirect, useRouterState } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, Package, Tag, ShoppingBag, Ticket, Star, Users, Sparkles, Image as ImageIcon } from "lucide-react";
+import { LayoutDashboard, Package, Tag, ShoppingBag, Ticket, Star, Users, Sparkles, Image as ImageIcon, Settings } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   ssr: false,
@@ -29,6 +29,7 @@ const adminTabs = [
   { to: "/admin/coupons", label: "Coupons", icon: Ticket, exact: false },
   { to: "/admin/reviews", label: "Reviews", icon: Star, exact: false },
   { to: "/admin/customers", label: "Customers", icon: Users, exact: false },
+  { to: "/admin/settings", label: "Settings", icon: Settings, exact: false },
 ];
 
 function AdminLayout() {
